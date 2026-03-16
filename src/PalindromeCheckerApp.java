@@ -1,72 +1,31 @@
-class Node {
-    char data;
-    Node next;
-
-    Node(char data) {
-        this.data = data;
-        this.next = null;
-    }
-}
-
 public class PalindromeCheckerApp {
 
-    // Function to check palindrome
-    public static boolean isPalindrome(Node head) {
+    // Recursive function to check palindrome
+    public static boolean isPalindrome(String word, int start, int end) {
 
-        if (head == null || head.next == null) {
+        // Base condition
+        if (start >= end) {
             return true;
         }
 
-        // Step 1: Find middle using fast & slow pointers
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // If characters don't match
+        if (word.charAt(start) != word.charAt(end)) {
+            return false;
         }
 
-        // Step 2: Reverse second half
-        Node prev = null;
-        Node current = slow;
-
-        while (current != null) {
-            Node next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        // Step 3: Compare first half and reversed second half
-        Node firstHalf = head;
-        Node secondHalf = prev;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        return true;
+        // Recursive call
+        return isPalindrome(word, start + 1, end - 1);
     }
 
     public static void main(String[] args) {
 
-        String word = "radar";
+        String word = "racecar";
 
-        // Convert string to linked list
-        Node head = new Node(word.charAt(0));
-        Node current = head;
+        // Call recursive function
+        boolean result = isPalindrome(word, 0, word.length() - 1);
 
-        for (int i = 1; i < word.length(); i++) {
-            current.next = new Node(word.charAt(i));
-            current = current.next;
-        }
-
-        // Check palindrome
-        if (isPalindrome(head)) {
+        // Print result
+        if (result) {
             System.out.println("The string \"" + word + "\" is a Palindrome.");
         } else {
             System.out.println("The string \"" + word + "\" is NOT a Palindrome.");
